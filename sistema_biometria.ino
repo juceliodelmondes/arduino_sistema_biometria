@@ -44,7 +44,7 @@ void runCommand(String command) {
   }
 }
 
-uint8_t cadastrar() {
+void cadastrar() {
 
   int p = -1;
   while (p != FINGERPRINT_OK) {
@@ -63,8 +63,6 @@ uint8_t cadastrar() {
       break;
     }
   }
-
-  // OK success!
 
   p = finger.image2Tz(1);
   switch (p) {
@@ -132,39 +130,13 @@ uint8_t cadastrar() {
     Serial.println("Error");
     return p;
   }
-
-  return true;
 }
 //==============================================
-uint8_t realizarLeitura() {
-  uint8_t p = finger.getImage();
-  switch (p) {
-    case FINGERPRINT_OK:
-
-      break;
-    default: //error
-      return p;
+void realizarLeitura() {
+  if(finger.getImage() == FINGERPRINT_OK && finger.image2Tz() == FINGERPRINT_OK && finger.fingerSearch() ==  FINGERPRINT_OK) {
+    Serial.print(finger.fingerID);
+    Serial.print(" "); 
+    Serial.println(finger.confidence);
   }
 
-  p = finger.image2Tz();
-  switch (p) {
-    case FINGERPRINT_OK:
-
-      break;
-    default: //error
-      return p;
-  }
-
-  p = finger.fingerSearch();
-  if (p == FINGERPRINT_OK) {
-
-  } else { //error
-    return p;
-  }
-
-  Serial.print(finger.fingerID);
-  Serial.print(" "); 
-  Serial.println(finger.confidence);
-
-  return finger.fingerID;
 }
