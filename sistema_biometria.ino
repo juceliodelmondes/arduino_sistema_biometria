@@ -45,9 +45,11 @@ void runCommand(String command) {
 }
 
 void cadastrar() {
-
+  int limiteLoop = 100;
+  int contadorLoop = 0;
   int p = -1;
-  while (p != FINGERPRINT_OK) {
+  while (p != FINGERPRINT_OK && contadorLoop < limiteLoop) {
+    contadorLoop++;
     p = finger.getImage();
     switch (p) {
     case FINGERPRINT_OK:
@@ -83,8 +85,9 @@ void cadastrar() {
   }
 
   p = -1;
-
-  while (p != FINGERPRINT_OK) {
+  contadorLoop = 0;
+  while (p != FINGERPRINT_OK && contadorLoop < limiteLoop) {
+    contadorLoop++;
     p = finger.getImage();
     switch (p) {
     case FINGERPRINT_OK:
