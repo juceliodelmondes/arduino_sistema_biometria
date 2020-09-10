@@ -13,10 +13,8 @@ void setup()
   finger.begin(57600);
 }
 
-void loop()                     // run over and over again
+void loop()
 {
-  //Serial.println("Ready to enroll a fingerprint!");
-  //Serial.println("Please type in the ID # (from 1 to 127) you want to save this finger as...");
   if(Serial.available() > 0) {
     char c = Serial.read();
     if(c != "\n") command.concat(c);
@@ -32,10 +30,15 @@ void loop()                     // run over and over again
 void runCommand(String command) {
   String param1 = command.substring(0,1); //comando w(write) ou d(delete)
   String param2 = command.substring(2); //id alvo
+  Serial.print(command);
   if(param1 == "w" && param2 != "") {
     //vai gravar novo registro com o id do parametro 2
     id = param2.toInt();
     cadastrar();
+  }
+
+  if(param1 == "d" && param2 != "") { //deletar determinado cadastro
+    finger.deleteModel(param2.toInt());
   }
 }
 
