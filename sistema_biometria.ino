@@ -11,6 +11,10 @@ void setup()
 {
   Serial.begin(9600);
   finger.begin(57600);
+  pinMode(3, OUTPUT);
+  tone(3, 330);
+  delay(200);
+  tone(3, 392, 200);
 }
 
 void loop()
@@ -25,7 +29,6 @@ void loop()
       command = "";
     } else if(command == "") {
       realizarLeitura();
-      delay(20);
     }
   }
 }
@@ -132,11 +135,13 @@ void cadastrar() {
   if (p == FINGERPRINT_OK) {
     Serial.print("Recorded ");
     Serial.println(id);
+    tone(3, 392, 500);
     for(int i = 0; i < 12; i++){
      if(i % 2 == 0) finger.LEDcontrol(false);
      if(i % 2 != 0) finger.LEDcontrol(true);
      delay(300);
     }
+    noTone(3);
   } else {
     Serial.println("Error");
     return p;
@@ -148,8 +153,11 @@ void realizarLeitura() {
     Serial.print(finger.fingerID);
     Serial.print(" "); 
     Serial.println(finger.confidence);
+    tone(3, 392);
+    delay(100);
+    tone(3, 440, 100);
     finger.LEDcontrol(false);
-    delay(1000);
+    delay(1500);
     finger.LEDcontrol(true);
   }
 
