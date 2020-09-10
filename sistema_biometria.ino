@@ -24,6 +24,8 @@ void loop()
       runCommand(command);
       command = "";
     }
+    realizarLeitura();
+    delay(20);
   }
 }
 
@@ -132,4 +134,37 @@ uint8_t cadastrar() {
   }
 
   return true;
+}
+//==============================================
+uint8_t realizarLeitura() {
+  uint8_t p = finger.getImage();
+  switch (p) {
+    case FINGERPRINT_OK:
+
+      break;
+    default: //error
+      return p;
+  }
+
+  p = finger.image2Tz();
+  switch (p) {
+    case FINGERPRINT_OK:
+
+      break;
+    default: //error
+      return p;
+  }
+
+  p = finger.fingerSearch();
+  if (p == FINGERPRINT_OK) {
+
+  } else { //error
+    return p;
+  }
+
+  Serial.print(finger.fingerID);
+  Serial.print(" "); 
+  Serial.println(finger.confidence);
+
+  return finger.fingerID;
 }
