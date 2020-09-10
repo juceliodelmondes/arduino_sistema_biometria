@@ -23,9 +23,10 @@ void loop()
     if(command != "") {
       runCommand(command);
       command = "";
+    } else if(command == "") {
+      realizarLeitura();
+      delay(20);
     }
-    realizarLeitura();
-    delay(20);
   }
 }
 
@@ -78,7 +79,9 @@ void cadastrar() {
 
   Serial.print("Removef ");
   Serial.println(id);
+  finger.LEDcontrol(false);
   delay(2000);
+  finger.LEDcontrol(true);
   p = 0;
   while (p != FINGERPRINT_NOFINGER) {
     p = finger.getImage();
@@ -129,6 +132,11 @@ void cadastrar() {
   if (p == FINGERPRINT_OK) {
     Serial.print("Recorded ");
     Serial.println(id);
+    for(int i = 0; i < 12; i++){
+     if(i % 2 == 0) finger.LEDcontrol(false);
+     if(i % 2 != 0) finger.LEDcontrol(true);
+     delay(300);
+    }
   } else {
     Serial.println("Error");
     return p;
@@ -140,6 +148,9 @@ void realizarLeitura() {
     Serial.print(finger.fingerID);
     Serial.print(" "); 
     Serial.println(finger.confidence);
+    finger.LEDcontrol(false);
+    delay(1000);
+    finger.LEDcontrol(true);
   }
 
 }
