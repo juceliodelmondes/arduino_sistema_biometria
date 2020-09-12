@@ -6,6 +6,7 @@ Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
 uint8_t id;
 String command;
+int timer = 0;
 
 void setup()
 {
@@ -19,24 +20,29 @@ void setup()
 
 void loop()
 {
+  if(timer == 10) {
+    Serial.println("? ?");
+    timer = 0;
+  }
   if(Serial.available() > 0) {
     char c = Serial.read();
     if(c != "\n") command.concat(c);
     delay(20);
-  } else if(!Serial.available()){
+  } else {
     if(command != "") {
       runCommand(command);
       command = "";
-    } else if(command == "") {
+    } else {
       realizarLeitura();
     }
   }
+  delay(100);
+  timer++;
 }
 
 void runCommand(String command) {
   String param1 = command.substring(0,1); //comando w(write) ou d(delete)
   String param2 = command.substring(2); //id alvo
-  Serial.print(command);
   if(param1 == "w" && param2 != "") {
     //vai gravar novo registro com o id do parametro 2
     id = param2.toInt();
@@ -45,6 +51,7 @@ void runCommand(String command) {
 
   if(param1 == "d" && param2 != "") { //deletar determinado cadastro
     finger.deleteModel(param2.toInt());
+    Serial.println(command);
   }
 }
 
@@ -150,15 +157,15 @@ void cadastrar() {
 //==============================================
 void realizarLeitura() {
   if(finger.getImage() == FINGERPRINT_OK && finger.image2Tz() == FINGERPRINT_OK && finger.fingerSearch() ==  FINGERPRINT_OK) {
+    finger.LEDcontrol(false);
+    Serial.print("access ");
     Serial.print(finger.fingerID);
-    Serial.print(" "); 
+    Serial.print(" ");
     Serial.println(finger.confidence);
     tone(3, 392);
     delay(100);
     tone(3, 440, 100);
-    finger.LEDcontrol(false);
     delay(1500);
     finger.LEDcontrol(true);
   }
-
 }
