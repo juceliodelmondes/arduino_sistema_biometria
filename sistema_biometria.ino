@@ -20,7 +20,7 @@ void setup()
 
 void loop()
 {
-  if(timer == 10) {
+  if(timer == 50) {
     Serial.println("? ?");
     timer = 0;
   }
@@ -36,7 +36,7 @@ void loop()
       realizarLeitura();
     }
   }
-  delay(100);
+  delay(10);
   timer++;
 }
 
@@ -157,15 +157,17 @@ void cadastrar() {
 //==============================================
 void realizarLeitura() {
   if(finger.getImage() == FINGERPRINT_OK && finger.image2Tz() == FINGERPRINT_OK && finger.fingerSearch() ==  FINGERPRINT_OK) {
-    finger.LEDcontrol(false);
+    for(int i = 0; i < 10; i++) {
+      if(i % 2 == 0) finger.LEDcontrol(false);
+      if(i % 2 != 0) finger.LEDcontrol(true);
+      delay(10);
+    }
     Serial.print("access ");
     Serial.print(finger.fingerID);
     Serial.print(" ");
-    Serial.println(finger.confidence);
-    tone(3, 392);
-    delay(100);
-    tone(3, 440, 100);
+    Serial.println(finger.confidence);    
+  
+    finger.LEDcontrol(false);
     delay(1500);
-    finger.LEDcontrol(true);
   }
 }
