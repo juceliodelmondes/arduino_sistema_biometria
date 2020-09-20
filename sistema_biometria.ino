@@ -72,7 +72,8 @@ void cadastrar() {
       delay(100);
       break;
     default:
-      Serial.println("Error");
+      Serial.print("Error ");
+      Serial.println(id);
       break;
     }
   }
@@ -83,7 +84,8 @@ void cadastrar() {
 
       break;
     default:
-      Serial.println("Error");
+      Serial.print("Error ");
+      Serial.println(id);
       return p;
   }
 
@@ -112,7 +114,8 @@ void cadastrar() {
       delay(100);
       break;
     default:
-      Serial.println("Error");
+      Serial.print("Error ");
+      Serial.println(id);
       break;
     }
   }
@@ -125,7 +128,8 @@ void cadastrar() {
 
       break;
     default:
-      Serial.println("Error");
+      Serial.print("Error ");
+      Serial.println(id);
       return p;
   }
 
@@ -134,7 +138,8 @@ void cadastrar() {
   if (p == FINGERPRINT_OK) {
 
   } else {
-    Serial.println("Error");
+    Serial.print("Error ");
+    Serial.println(id);
     return p;
   }
   
@@ -150,7 +155,8 @@ void cadastrar() {
     }
     noTone(3);
   } else {
-    Serial.println("Error");
+    Serial.print("Error ");
+    Serial.println(id);
     return p;
   }
 }
@@ -168,6 +174,6 @@ void realizarLeitura() {
     Serial.println(finger.confidence);    
   
     finger.LEDcontrol(false);
-    delay(1500);
+    delay(1000);
   }
 }
